@@ -9,22 +9,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.arabot.dao.DatabaseUtilities;
-import com.google.gson.JsonObject;
 
 
+@Path("add-data")
 public class ArticlesStoreService {
 
-	public static void main(String[] args) {
+	@GET
+	public void addDataFromWiki() {
 
 		ArticlesStoreService articlesLookupService = new ArticlesStoreService();
 		List<ArticleBean> list = articlesLookupService.getArticles();
-		System.out.println("---------------------------------------");
-		System.out.println(DatabaseUtilities.getConnectionURLAsString());
 		articlesLookupService.addListOfArticlesToTheDatabase(list);
 	}
 
@@ -34,10 +36,8 @@ public class ArticlesStoreService {
 
 			try {
 				DatabaseUtilities.insertArticle(article);
-				System.out.println(article.getTitle() + " article has been inserted successfully");
 			} catch (SQLException e) {
 				e.printStackTrace();
-				System.out.println(article.getTitle() + " article has NOT been inserted successfully");
 				continue;
 			}
 		}
@@ -97,10 +97,10 @@ public class ArticlesStoreService {
 			JSONObject articleObject = searchArray.getJSONObject(i);
 			JSONObject articleAsJsonObj = (JSONObject) articleObject;
 			ArticleBean articleAsJavaObj = new ArticleBean();
-			articleAsJavaObj.setTitle((String) articleAsJsonObj.get("title"));
-			articleAsJavaObj.setSize((long) articleAsJsonObj.get("size"));
-			articleAsJavaObj.setWordCount((long) articleAsJsonObj.get("wordcount"));
-			articleAsJavaObj.setSnippet((String) articleAsJsonObj.get("snippet"));
+			articleAsJavaObj.setTitle(articleAsJsonObj.getString("title"));
+			articleAsJavaObj.setSize(articleAsJsonObj.getLong("size"));
+			articleAsJavaObj.setWordCount(articleAsJsonObj.getLong("wordcount"));
+			articleAsJavaObj.setSnippet(articleAsJsonObj.getString("snippet"));
 
 			listOfArticlesAsJavaBeanObejcts.add(articleAsJavaObj);
 

@@ -27,7 +27,7 @@ public class DatabaseUtilities {
 
 		try {
 
-			input = new FileInputStream("C:\\Users\\totah\\Desktop\\YaserEEWorkSpace\\wikiArticles\\src\\main\\webapp\\WEB-INF\\props\\database.properties");
+			input = new FileInputStream("/src/main/webapp/WEB-INF/props//database.properties");
 
 			databasePropsFile.load(input);
 
